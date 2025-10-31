@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
+
+    <link rel="stylesheet" th:href="@{/style.css}">
+
+    <title>Cadastro de tarefa</title>
+</head>
+<body>
+
+
+<nav class="navbar navbar-expand-lg bg-light">
+    <div class="container-fluid">
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" href="/register">Cadastro</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/list">Listagem</a>
+                </li>
+
+            </ul>
+
+        </div>
+    </div>
+</nav>
+
+<!--
+
+<form method="POST" action="/register" th:object="${task}">
+    <input type="hidden" th:field="*{id}" name="id" />
+    <input type="hidden" th:field="*{id}" />
+
+    <div class="mb-3">
+        <label for="name" class="form-label">Nome da tarefa</label>
+        <input type="text" id="name" class="form-control" th:field="*{name}" placeholder="Digite o nome da tarefa" required>
+    </div>
+
+    <div class="mb-3">
+        <label for="date" class="form-label">Data de execução</label>
+        <input type="date" id="date" class="form-control" th:field="*{date}" required>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Cadastrar</button>
+</form>
+
+
+<form method="POST" action="/register" th:object="${task}" class="row g-3 needs-validation was-validated" novalidate="">
+    <div class="col-md-4">
+        <label for="validationCustom01" class="form-label">First name</label>
+        <input type="text" class="form-control" id="validationCustom01" required="">
+        <div class="valid-feedback">
+            Looks good!
+        </div>
+    </div>
+    <div class="col-md-4">
+        <label for="validationCustom02" class="form-label">Last name</label>
+        <input type="text" class="form-control" id="validationCustom02" required="">
+        <div class="valid-feedback">
+            Looks good!
+        </div>
+    </div>
+    <div class="col-md-4">
+        <label for="validationCustomUsername" class="form-label">Username</label>
+        <div class="input-group has-validation">
+            <span class="input-group-text" id="inputGroupPrepend">@</span>
+            <input type="text" class="form-control" id="validationCustomUsername" aria-describedby="inputGroupPrepend" required="">
+            <div class="invalid-feedback">
+                Please choose a username.
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <label for="validationCustom03" class="form-label">City</label>
+        <input type="text" class="form-control" id="validationCustom03" required="">
+        <div class="invalid-feedback">
+            Please provide a valid city.
+        </div>
+    </div>
+    <div class="col-md-3">
+        <label for="validationCustom04" class="form-label">State</label>
+        <select class="form-select" id="validationCustom04" required="">
+            <option selected="" disabled="" value="">Choose...</option>
+            <option>...</option>
+        </select>
+        <div class="invalid-feedback">
+            Please select a valid state.
+        </div>
+    </div>
+    <div class="col-md-3">
+        <label for="validationCustom05" class="form-label">Zip</label>
+        <input type="text" class="form-control" id="validationCustom05" required="">
+        <div class="invalid-feedback">
+            Please provide a valid zip.
+        </div>
+    </div>
+    <div class="col-12">
+        <button class="btn btn-primary" type="submit">Submit form</button>
+    </div>
+</form>
+-->
+
+<div class="container mt-4">
+    <h2 class="mb-3">Cadastro de Paciente</h2>
+
+    <form method="POST" th:action="@{/register}" th:object="${paciente}" class="row g-3 needs-validation" novalidate>
+        <input type="hidden" th:field="*{id}"/>
+
+        <div class="col-md-6">
+            <label class="form-label">Nome completo</label>
+            <input type="text" class="form-control" th:field="*{name}" placeholder="Digite seu nome" required>
+            <div class="invalid-feedback">Por favor, insira seu nome completo.</div>
+        </div>
+
+        <div class="col-md-6">
+            <label class="form-label">E-mail</label>
+            <input type="email" class="form-control" th:field="*{email}" placeholder="exemplo@email.com" required>
+            <div class="invalid-feedback">Digite um e-mail válido.</div>
+        </div>
+
+        <div class="col-md-6">
+            <label class="form-label">Senha</label>
+            <input type="password" class="form-control" th:field="*{password}" placeholder="Mínimo 8 caracteres" minlength="8" required>
+            <div class="invalid-feedback">A senha deve ter pelo menos 8 caracteres.</div>
+        </div>
+
+        <div class="col-md-6">
+            <label class="form-label">CPF</label>
+            <input type="text" class="form-control" th:field="*{cpf}" placeholder="000.000.000-00" pattern="\d{3}\.\d{3}\.\d{3}-\d{2}" required>
+            <div class="invalid-feedback">Insira um CPF válido (ex: 000.000.000-00).</div>
+        </div>
+
+        <h5 class="mt-4">Endereço</h5>
+
+        <!-- Apenas CEP preenchido manualmente -->
+        <div class="col-md-4">
+            <label class="form-label">CEP</label>
+            <input type="text" class="form-control" id="cep" th:field="*{endereco.cep}" placeholder="00000-000" maxlength="9" pattern="\d{5}-?\d{3}" required>
+            <div class="invalid-feedback">Digite um CEP válido (ex: 12345-678).</div>
+        </div>
+
+        <!-- Campos preenchidos automaticamente -->
+        <div class="col-md-8">
+            <label class="form-label">Logradouro</label>
+            <input type="text" class="form-control" id="logradouro" th:field="*{endereco.logradouro}" readonly required>
+            <div class="invalid-feedback">Logradouro não encontrado.</div>
+        </div>
+
+        <div class="col-md-6">
+            <label class="form-label">Bairro</label>
+            <input type="text" class="form-control" id="bairro" th:field="*{endereco.bairro}" readonly required>
+            <div class="invalid-feedback">Bairro não encontrado.</div>
+        </div>
+
+        <div class="col-md-3">
+            <label class="form-label">Cidade</label>
+            <input type="text" class="form-control" id="localidade" th:field="*{endereco.localidade}" readonly required>
+            <div class="invalid-feedback">Cidade não encontrada.</div>
+        </div>
+
+        <div class="col-md-3">
+            <label class="form-label">Estado</label>
+            <input type="text" class="form-control" id="estado" th:field="*{endereco.estado}" readonly required>
+            <div class="invalid-feedback">Estado não encontrado.</div>
+        </div>
+
+        <div class="col-12 mt-4">
+            <button type="submit" class="btn btn-primary">Salvar</button>
+            <a href="/list" class="btn btn-secondary">Cancelar</a>
+        </div>
+    </form>
+</div>
+
+<script>
+
+
+
+
+    // Validação visual do Bootstrap
+    (() => {
+        'use strict';
+        const forms = document.querySelectorAll('.needs-validation');
+        Array.from(forms).forEach(form => {
+            form.addEventListener('submit', event => {
+                if (!form.checkValidity()) {
+                    event.preventDefault();
+                    event.stopPropagation();
+                }
+                form.classList.add('was-validated');
+            }, false);
+        });
+    })();
+
+    // Auto-preenchimento via ViaCEP
+    document.getElementById('cep').addEventListener('blur', async () => {
+        const cep = document.getElementById('cep').value.replace(/\D/g, '');
+
+        if (cep.length === 8) {
+            try {
+                const response = await fetch(`https://viacep.com.br/ws/${cep}/json/`);
+                const data = await response.json();
+
+                if (!data.erro) {
+                    document.getElementById('logradouro').value = data.logradouro;
+                    document.getElementById('bairro').value = data.bairro;
+                    document.getElementById('localidade').value = data.localidade;
+                    document.getElementById('estado').value = data.uf;
+                } else {
+                    alert('CEP não encontrado!');
+                }
+            } catch (error) {
+                alert('Erro ao buscar o CEP.');
+            }
+        }
+    });
+</script>
+
+
+
+</body>
+</html>
