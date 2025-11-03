@@ -1,6 +1,7 @@
 package br.com.hospital.model;
 
 
+import br.com.hospital.repository.AgendamentoRepository;
 import br.com.hospital.repository.PacienteRepository;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -8,6 +9,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+
+import java.util.Date;
 import java.util.Optional;
 
 @Getter
@@ -98,6 +101,36 @@ public class Paciente extends User{
     public Paciente buscarPaciente(PacienteRepository repository, Long id) {
         Optional<Paciente> p = repository.findById(id);
         return p.isPresent() ? p.get() : null;
+    }
+
+
+    public boolean agendar(Paciente paciente, Medico medico, Date data, Informacoes informacoes, AgendamentoRepository repository) {
+
+        int tempoNecessario = informacoes.getTempoNecessario();
+        int horasTrabalhadas = medico.getHorasTrabalhadas();
+
+        // Verifica disponibilidade do médico
+        if (tempoNecessario + horasTrabalhadas <= medico.getCargaHoraria()) {
+            medico.setHorasTrabalhadas(horasTrabalhadas + tempoNecessario);
+
+            Agendamento agendamento;
+
+            // Cria o tipo correto de agendamento conforme o tipo de Informacoes
+            if (informacoes instanceof InfConsulta) {
+                agendamento = new Consulta(data, paciente, medico, Agendamento.StatusAgendamento.AGENDADO);
+            } else if (informacoes instanceof InfExame) {
+                agendamento = new Exame(data, paciente, medico, Agendamento.StatusAgendamento.AGENDADO);
+            } else if (informacoes instanceof InfProcedimento) {
+                agendamento = new Procedimento(data, paciente, medico, Agendamento.StatusAgendamento.AGENDADO);
+            } else {
+                throw new IllegalArgumentException("Tipo de informação desconhecido: " + informacoes.getClass().getSimpleName());
+            }
+
+            repository.save(agendamento);
+            return true;
+        }
+
+        return false;
     }
 
 

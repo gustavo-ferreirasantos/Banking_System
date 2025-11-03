@@ -43,7 +43,6 @@ public class ApplicationController {
     public String login_paciente(@ModelAttribute Autenticacao autenticacao) {
         Paciente service = new Paciente();
         if(service.autenticar(autenticacao.getEmail(), autenticacao.getPassword(), repository)) {
-
             return "redirect:/dashboard/" + repository.findByEmail(autenticacao.getEmail()).get().getId();
         }else{
             return "redirect:/login/paciente?error";
@@ -100,7 +99,7 @@ public class ApplicationController {
     public ModelAndView dashboard(@PathVariable("id") Long id) {
         ModelAndView mv = new ModelAndView("dashboard");
 
-        mv.addObject("paciente", repository.findById(id).get());
+        mv.addObject( "paciente", repository.findById(id).get());
         return mv;
     }
 

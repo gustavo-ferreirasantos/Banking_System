@@ -16,6 +16,8 @@ public class Medico extends User{
 
     private String crm;
     private Especialidade especialidade;
+    private int cargaHoraria;
+    private int horasTrabalhadas = 0;
 
     public enum Especialidade{
         CLINICO_GERAL,
