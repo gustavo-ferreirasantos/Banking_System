@@ -1,5 +1,7 @@
 package br.com.hospital.model;
 
+import br.com.hospital.repository.AgendamentoRepository;
+import br.com.hospital.repository.MedicoRepository;
 import br.com.hospital.repository.PacienteRepository;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -40,6 +42,15 @@ public class Medico extends User{
     public boolean autenticar(String email, String senha, PacienteRepository repository) {
         return false;
     }
+
+    public boolean realizarAtendimento(AgendamentoRepository agendamentoRepository, PacienteRepository pacienteRepository, MedicoRepository medicoRepository) {
+        return false;
+    }
+
+    public String Resultados(AgendamentoRepository agendamentoRepository){
+        return null;
+    }
+
 
 
 }
