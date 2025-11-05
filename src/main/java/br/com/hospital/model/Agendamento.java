@@ -4,7 +4,8 @@ import br.com.hospital.model.Medico;
 import br.com.hospital.model.Paciente;
 import jakarta.persistence.*;
 
-import java.util.Date;
+import java.sql.Timestamp;
+
 
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
@@ -14,7 +15,7 @@ public abstract class Agendamento {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    private Date data;
+    private Timestamp data;
 
     @ManyToOne
     private Paciente paciente;
@@ -33,7 +34,7 @@ public abstract class Agendamento {
     public Agendamento() {}
 
     // 🔹 Construtor com todos os dados
-    public Agendamento(Date data, Paciente paciente, Medico medico, StatusAgendamento status) {
+    public Agendamento(Timestamp data, Paciente paciente, Medico medico, StatusAgendamento status) {
         this.data = data;
         this.paciente = paciente;
         this.medico = medico;

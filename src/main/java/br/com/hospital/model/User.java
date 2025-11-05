@@ -17,7 +17,7 @@ public abstract class User implements Autenticavel {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    private String name;
+    private String nome;
     private String email;
     private String password;
 
@@ -25,7 +25,7 @@ public abstract class User implements Autenticavel {
     public abstract boolean autenticar(String email, String senha, PacienteRepository repository);
 
     public User(String name, String email, String password) {
-        this.name = name;
+        this.nome = nome;
         setEmail(email);
         setPassword(password);
     }

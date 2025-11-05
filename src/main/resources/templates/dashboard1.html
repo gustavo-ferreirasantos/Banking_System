@@ -100,14 +100,14 @@
 
     <!-- Topbar -->
     <div class="topbar mb-4">
-        <h3 class="m-0">Painel do Paciente - <span th:text="${paciente.name}">Gustavo</span></h3>
+        <h3 class="m-0">Painel do Paciente - <span th:text="${paciente.nome}">Gustavo</span></h3>
         <div><i class="bi bi-person-circle fs-3"></i></div>
     </div>
 
     <!-- Seção: Dashboard -->
     <section id="dashboard" class="secao">
         <div class="text-center mb-5">
-            <h4>Bem-vindo(a), <span th:text="${paciente.name}">Gustavo</span> 👋</h4>
+            <h4>Bem-vindo(a), <span th:text="${paciente.nome}">Gustavo</span> 👋</h4>
             <p class="text-muted">Aqui você acompanha o status dos seus exames e atividades recentes.</p>
         </div>
 
@@ -238,7 +238,7 @@
         <div class="card p-4 text-center">
             <i class="bi bi-person-circle fs-1 mb-3 text-secondary"></i>
             <h5>Informações do Paciente</h5>
-            <p><strong>Nome:</strong> <span th:text="${paciente.name}">Gustavo Ferreira Santos</span></p>
+            <p><strong>Nome:</strong> <span th:text="${paciente.nome}">Gustavo Ferreira Santos</span></p>
             <p><strong>Email:</strong> <span th:text="${paciente.email}">gustavo@gmail.com</span></p>
         </div>
     </section>

@@ -3,7 +3,7 @@ package br.com.hospital.model;
 import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
 
-import java.util.Date;
+import java.sql.Timestamp;
 
 @Entity
 @DiscriminatorValue("Consulta")
@@ -13,7 +13,7 @@ public class Consulta extends Agendamento {
         super();
     }
 
-    public Consulta(Date data, Paciente paciente, Medico medico, StatusAgendamento status) {
+    public Consulta(Timestamp data, Paciente paciente, Medico medico, StatusAgendamento status) {
         super(data, paciente, medico, status);
     }
 }
