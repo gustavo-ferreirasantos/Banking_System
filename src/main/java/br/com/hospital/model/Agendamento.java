@@ -30,10 +30,10 @@ public abstract class Agendamento {
         AGENDADO, CANCELADO, CONCLUIDO
     }
 
-    // 🔹 Construtor padrão
+    // Construtor padrão
     public Agendamento() {}
 
-    // 🔹 Construtor com todos os dados
+    // Construtor com todos os dados
     public Agendamento(Timestamp data, Paciente paciente, Medico medico, StatusAgendamento status) {
         this.data = data;
         this.paciente = paciente;
