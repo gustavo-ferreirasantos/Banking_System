@@ -10,6 +10,9 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+import java.util.Optional;
 
 @Getter
 @Setter
@@ -39,7 +42,11 @@ public class Medico extends User{
 
 
     @Override
-    public boolean autenticar(String email, String senha, PacienteRepository repository) {
+    public boolean autenticar(String email, String senha, JpaRepository<? extends User, Long> repository) {
+        if (repository instanceof MedicoRepository medicoRepository) {
+            Optional<Medico> p = medicoRepository.findByEmailIgnoreCase(email);
+            return p.isPresent() && p.get().getPassword().equals(senha);
+        }
         return false;
     }
 

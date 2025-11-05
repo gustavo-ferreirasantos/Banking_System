@@ -2,6 +2,7 @@ package br.com.hospital.controller;
 
 
 import br.com.hospital.DTO.Autenticacao;
+import br.com.hospital.model.Admin;
 import br.com.hospital.model.Informacoes;
 import br.com.hospital.model.Medico;
 import br.com.hospital.model.Paciente;
@@ -34,6 +35,7 @@ public class ApplicationController {
     private InformacoesRepository informacoesRepository;
 
     private final Paciente pacienteService = new Paciente();
+    private final Admin adminService = new Admin();
 
     @GetMapping("/")
     public ModelAndView home() {
@@ -41,9 +43,8 @@ public class ApplicationController {
     }
 
     @GetMapping("/login")
-    public ModelAndView login_paciente() {
+    public ModelAndView loginForm() {
         ModelAndView mv = new ModelAndView("login");
-        mv.addObject("autenticacao", new Autenticacao());
         return mv;
     }
 
@@ -55,12 +56,16 @@ public class ApplicationController {
     }
 
     @PostMapping("/login")
-    public String login_paciente(@ModelAttribute Autenticacao autenticacao) {
-        Paciente service = new Paciente();
-        if(service.autenticar(autenticacao.getEmail(), autenticacao.getPassword(), pacienteRepository)) {
-            return "redirect:/dashboard/" + pacienteRepository.findByEmail(autenticacao.getEmail()).get().getId();
+    public String autenticarLogin(
+            @RequestParam("email") String email,
+            @RequestParam("password") String password,
+            RedirectAttributes redirectAttributes) {
+
+        if(pacienteService.autenticar(email, password, pacienteRepository)) {
+            Long id = pacienteRepository.findByEmailIgnoreCase(email).get().getId();
+            return "redirect:/dashboard/" + id;
         }else{
-            return "redirect:/login/paciente?error";
+            return "redirect:/login?error";
         }
     }
 
@@ -82,8 +87,8 @@ public class ApplicationController {
     }
 
     @PostMapping("/register")
-    public String register(Paciente client) {
-        pacienteRepository.save(client);
+    public String register(Paciente paciente) {
+        adminService.adicionarPaciente(pacienteRepository, paciente);
         return "redirect:/list";
     }
 
@@ -139,7 +144,7 @@ public class ApplicationController {
             mv.addObject("tiposEspecificos", informacoesRepository.findByEspecialidadeRelacionada(tipoAtendimento));
         }
 
-        mv.addObject("mostrarAgendar", true); // ✅ garante que a seção abre
+        mv.addObject("mostrarAgendar", true);
         return mv;
     }
 

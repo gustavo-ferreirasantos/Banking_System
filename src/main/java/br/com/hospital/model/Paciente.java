@@ -8,6 +8,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.data.jpa.repository.JpaRepository;
 
 
 import java.sql.Timestamp;
@@ -89,9 +90,12 @@ public class Paciente extends User {
 
 
     @Override
-    public boolean autenticar(String email, String senha, PacienteRepository repository) {
-        Optional<Paciente> p = repository.findByEmail(email);
-        return p.isPresent() && p.get().getPassword().equals(senha);
+    public boolean autenticar(String email, String senha, JpaRepository<? extends User, Long> repository) {
+        if (repository instanceof PacienteRepository pacienteRepository) {
+            Optional<Paciente> p = pacienteRepository.findByEmailIgnoreCase(email);
+            return p.isPresent() && p.get().getPassword().equals(senha);
+        }
+        return false;
     }
 
     public Paciente buscarPaciente(PacienteRepository repository, Long id) {

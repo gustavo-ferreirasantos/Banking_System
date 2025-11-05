@@ -8,7 +8,7 @@ import java.util.Optional;
 
 public interface MedicoRepository extends JpaRepository<Medico, Long> {
 
-    Optional<Medico> findByEmail(String email);
+    Optional<Medico> findByEmailIgnoreCase(String email);
     Optional<Medico> findByNome(String nome);
     List<Medico> findByEspecialidade(String especialidade);
 }

@@ -28,21 +28,21 @@
             <div class="col-md-8 col-lg-6 col-xl-4 offset-xl-1">
 
                 <!--  FORMULÁRIO DE LOGIN -->
-                <form method="POST" th:action="@{/login/paciente}" th:object="${autenticacao}">
+                <form method="POST" th:action="@{'/login'}" >
 
                     <p class="lead fw-normal mb-0 me-3">Sign in with</p>
                     <br>
 
                     <!-- Email input -->
                     <div class="form-outline mb-4">
-                        <input type="email" id="form3Example3" class="form-control form-control-lg" placeholder="Enter a valid email address" th:field="*{email}" required>
+                        <input type="email" id="form3Example3" class="form-control form-control-lg" placeholder="Enter a valid email address" name="email" required>
                         <label class="form-label" for="form3Example3">Email address</label>
                     </div>
 
                     <!-- Password input -->
                     <div class="form-outline mb-3">
-                        <input type="password" id="password" class="form-control form-control-lg"  placeholder="Enter password" th:field="*{password}" required>
-                        <label class="form-label" for="password">Password</label>
+                        <input type="password" id="password" class="form-control form-control-lg"  placeholder="Enter password" name="password" required>
+                        <label class="form-label" for="password" >Password</label>
                     </div>
 
                     <div th:if="${param.error}">
