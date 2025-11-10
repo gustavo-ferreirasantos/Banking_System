@@ -89,12 +89,25 @@ public class ApplicationController {
     @PostMapping("/register")
     public String register(Paciente paciente) {
         adminService.adicionarPaciente(pacienteRepository, paciente);
-        return "redirect:/list";
+        return "redirect:/lista";
+    }
+
+    @GetMapping("/registroMedico")
+    public ModelAndView registroMedicoForm() {
+        ModelAndView mv = new ModelAndView("registroMedico");
+        mv.addObject("medico", new Medico());
+        return mv;
+    }
+
+    @PostMapping("/registroMedico")
+    public String registroMedico(@ModelAttribute Medico medico) {
+        medicoRepository.save(medico);
+        return "redirect:/listaMedicos";
     }
 
     @GetMapping("/list")
     public ModelAndView list() {
-        ModelAndView mv = new ModelAndView("list");
+        ModelAndView mv = new ModelAndView("lista");
         mv.addObject("pacientes", pacienteRepository.findAll());
         return mv;
     }
@@ -129,24 +142,36 @@ public class ApplicationController {
         return mv;
     }
 
-    @GetMapping("/agendar/{idPaciente}")
-    public ModelAndView agendarForm(
+
+
+
+    @GetMapping("/agendar/{idPaciente}/tipo")
+    public ModelAndView selecionarTipoAtendimento(
             @PathVariable("idPaciente") Long idPaciente,
-            @RequestParam(value = "tipoAtendimento", required = false) String tipoAtendimento) {
+            @RequestParam("tipoAtendimento") String tipoAtendimento) {
 
         ModelAndView mv = new ModelAndView("dashboard");
-        mv.addObject("paciente", pacienteRepository.findById(idPaciente).get());
-        mv.addObject("pacienteId", idPaciente);
-        mv.addObject("tiposAtendimento", informacoesRepository.findDistinctTipos());
 
-        if (tipoAtendimento != null && !tipoAtendimento.isEmpty()) {
-            mv.addObject("medicos", medicoRepository.findByEspecialidade(tipoAtendimento));
-            mv.addObject("tiposEspecificos", informacoesRepository.findByEspecialidadeRelacionada(tipoAtendimento));
+        Optional<Paciente> pacienteOpt = pacienteRepository.findById(idPaciente);
+        if (pacienteOpt.isEmpty()) {
+            mv.setViewName("redirect:/login?erro=paciente_nao_encontrado");
+            return mv;
         }
-
         mv.addObject("mostrarAgendar", true);
+
+
+        mv.addObject("tipoSelecionado", tipoAtendimento);
+        // Carrega os médicos disponíveis para o tipo escolhido
+        mv.addObject("medicos", medicoRepository.findByEspecialidade(tipoAtendimento));
+
+
+
+        // Carrega as subcategorias ou tipos específicos (ex: tipo de exame)
+        mv.addObject("tiposEspecificos", informacoesRepository.findByEspecialidadeRelacionada(tipoAtendimento));
+
         return mv;
     }
+
 
 
 
@@ -171,12 +196,6 @@ public class ApplicationController {
             Timestamp dataCompleta = java.sql.Timestamp.valueOf(data + " " + hora + ":00");
 
             boolean sucesso = pacienteService.agendar(paciente, medico, dataCompleta, informacoes, agendamentoRepository);
-
-            if (sucesso) {
-                redirectAttributes.addFlashAttribute("mensagem", "✅ Agendamento realizado com sucesso!");
-            } else {
-                redirectAttributes.addFlashAttribute("erro", "⚠️ Médico sem horário disponível!");
-            }
 
             return "redirect:/dashboard/" + pacienteId;
 

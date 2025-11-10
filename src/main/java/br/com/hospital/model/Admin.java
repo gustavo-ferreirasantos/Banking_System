@@ -39,12 +39,12 @@ public class Admin extends User {
         pacienteRepository.save(paciente);
     }
 
-    public void adicionarMedico(MedicoRepository medicoRepository) {
-
+    public void adicionarMedico(MedicoRepository medicoRepository, Medico medico) {
+        medicoRepository.save(medico);
     }
 
-    public void modficarSenha(String senha, MedicoRepository medicoRepository) {
-
+    public void modficarSenha(String senha, AdminRepository adminRepository) {
+        adminRepository.findById(1L).get().setPassword(senha);
     }
 
 }
