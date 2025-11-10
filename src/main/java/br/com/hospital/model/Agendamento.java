@@ -1,44 +1,47 @@
 package br.com.hospital.model;
 
-import br.com.hospital.model.Medico;
-import br.com.hospital.model.Paciente;
-import jakarta.persistence.*;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.MappedSuperclass;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-import java.sql.Timestamp;
+import java.util.Date;
 
-
-@Entity
-@Inheritance(strategy = InheritanceType.JOINED)
-
+@MappedSuperclass
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public abstract class Agendamento {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
 
-    private Timestamp data;
-
-    @ManyToOne
-    private Paciente paciente;
-
-    @ManyToOne
-    private Medico medico;
+    private Date data;
 
     @Enumerated(EnumType.STRING)
-    private StatusAgendamento status;
+    private StatusAgendamento status; // AGENDADO, REALIZADO, CANCELADO
 
-    public enum StatusAgendamento {
-        AGENDADO, CANCELADO, CONCLUIDO
+    public void cancelar() {
+        this.status = StatusAgendamento.CANCELADO;
     }
 
-    // Construtor padrão
-    public Agendamento() {}
+    public void confirmar() {
+        this.status = StatusAgendamento.AGENDADO;
+    }
 
-    // Construtor com todos os dados
-    public Agendamento(Timestamp data, Paciente paciente, Medico medico, StatusAgendamento status) {
-        this.data = data;
-        this.paciente = paciente;
-        this.medico = medico;
-        this.status = status;
+    public void concluir() {
+        this.status = StatusAgendamento.REALIZADO;
+    }
+
+    public abstract String getDescricao(); // cada tipo de agendamento fornece sua descrição
+
+
+
+    public enum StatusAgendamento {
+        AGENDADO,
+        REALIZADO,
+        CANCELADO
     }
 
 }

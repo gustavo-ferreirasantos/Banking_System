@@ -7,7 +7,6 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.springframework.data.jpa.repository.JpaRepository;
 
 @Getter
 @Setter
@@ -17,16 +16,16 @@ import org.springframework.data.jpa.repository.JpaRepository;
 public abstract class User implements Autenticavel {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-    private String nome;
+    private int id;
+    private String name;
     private String email;
     private String password;
 
 
-    public abstract boolean autenticar(String email, String senha, JpaRepository<? extends User, Long> repository);
+    public abstract boolean autenticar(String email, String senha, PacienteRepository repository);
 
     public User(String name, String email, String password) {
-        this.nome = nome;
+        this.name = name;
         setEmail(email);
         setPassword(password);
     }
